@@ -1,11 +1,13 @@
 import React from "react";
 import { Task } from "../models/task";
+import SwitchTask from "./SwitchTask";
 
 interface props {
     tasks: Task[];
+    changeStatus: (e: React.FormEvent, task: Task) => void;
 };
 
-const ListTasks = ({tasks}: props) => {
+const ListTasks = ({tasks, changeStatus}: props) => {
 
     const status = [
         {id: 1, label: "To do", inProgress: false, isDone: false},
@@ -14,17 +16,20 @@ const ListTasks = ({tasks}: props) => {
     ];
 
     return (
-        <div>
+        <div className="flex justify-around my-8 h-screen">
             {
-                status.map(item => (
-                    <div key={item.id}>
-                        <h2>{item.label}</h2>
+                status.map((item, key) => (
+                    <div className={"w-4/12 border-0" + (key + 1 < status.length ? " border-r-2" : "")} key={item.id}>
+                        <h2 className="text-center">{item.label}</h2>
                         <ul>
                             {
                                 tasks.map(task => {
                                     if(task.inProgress === item.inProgress && task.isDone === item.isDone) {
                                         return(
-                                            <li key={task.id}> {task.todo} </li>
+                                            <li className="my-4 border border-y-2 border-x-0 border-y-dark-blue relative" key={task.id}>
+                                                {task.todo}
+                                                <SwitchTask task={task} changeStatus={changeStatus}/>
+                                            </li>
                                         )
                                     }
                                 })

@@ -9,16 +9,19 @@ interface props {
 const InputTask = ({todo, setTodo, handeleAdd}: props) => {
     return (
         <div>
-            <label htmlFor="task">Add new task</label>
-            <input
-                type="text"
-                name="task"
-                onChange={(e) => setTodo(e.target.value)}
-                value={todo}
-            />
-            <button type="button" onClick={(e) => handeleAdd(e)}>
-                set task
-            </button>
+            <h1 className="text-center">Add new task</h1>
+            <div className="flex justify-center mt-1">
+                <input
+                    type="text"
+                    name="task"
+                    className="border border-2 border-bright-blue"
+                    onChange={(e) => setTodo(e.target.value)}
+                    value={todo}
+                />
+                <button type="button" className="ml-3" onClick={(e) => handeleAdd(e)}>
+                    set task
+                </button>
+            </div>
         </div>
     )
 }

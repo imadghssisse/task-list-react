@@ -5,9 +5,10 @@ import SwitchTask from "./SwitchTask";
 interface props {
     tasks: Task[];
     changeStatus: (e: React.FormEvent, task: Task) => void;
+    handelUpdate : (e: React.FormEvent, task: Task) => void;
 };
 
-const ListTasks = ({tasks, changeStatus}: props) => {
+const ListTasks = ({tasks, changeStatus, handelUpdate}: props) => {
 
     const status = [
         {id: 1, label: "To do", inProgress: false, isDone: false},
@@ -26,9 +27,9 @@ const ListTasks = ({tasks, changeStatus}: props) => {
                                 tasks.map(task => {
                                     if(task.inProgress === item.inProgress && task.isDone === item.isDone) {
                                         return(
-                                            <li className="my-4 border border-y-2 border-x-0 border-y-dark-blue relative" key={task.id}>
+                                            <li className="p-4 my-4 border border-y-2 border-x-0 border-y-dark-blue relative" key={task.id}>
                                                 {task.todo}
-                                                <SwitchTask task={task} changeStatus={changeStatus}/>
+                                                <SwitchTask task={task} changeStatus={changeStatus} handelUpdate={handelUpdate}/>
                                             </li>
                                         )
                                     }

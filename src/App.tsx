@@ -7,13 +7,25 @@ function App() {
   const [todo, setTodo] = useState<string>("");
   const [tasks, setTasks] = useState<Task[]>([]);
   const [update, setUpdate] = useState<boolean>(true);
-  
-  const handeleAdd = (e: React.FormEvent) => {
+  const [updateTodo, setUpdateTodo] = useState<Task>();
+
+  const handeleAdd = async (e: React.FormEvent) => {
     e.preventDefault();    
-    if(todo) {
+    if(todo && !updateTodo) {
       setTasks([...tasks, {id: Date.now(), todo: todo, inProgress: false, isDone: false}]);
-      setTodo("");
+    } else if(todo && updateTodo) {
+      await setUpdate(false);
+      let newTasks = tasks
+      await newTasks.map(item => {
+        if(updateTodo.hasOwnProperty('id') && item.id === updateTodo.id) {
+          item.todo = todo;
+        }
+      })       
+      await setTasks(newTasks);
+      await setUpdateTodo(undefined);
+      await setUpdate(true);
     }
+    await setTodo("");
   }
 
   const changeStatus = async (e: React.FormEvent, task: Task) => {
@@ -31,12 +43,20 @@ function App() {
     }
   }
 
+  const handelUpdate = (e: React.FormEvent, task: Task) => {
+    e.preventDefault();
+    if(task) {
+      setUpdateTodo(task);
+      setTodo(task.todo);
+    }
+  }
+
   return (
     <div className="App">
-        <InputTask todo={todo} setTodo={setTodo} handeleAdd={handeleAdd} />
+        <InputTask todo={todo} setTodo={setTodo} handeleAdd={handeleAdd} updateTodo={updateTodo} />
         <div>
           {
-            update == true ? <ListTasks tasks={tasks} changeStatus={changeStatus}/> : ''
+            update == true ? <ListTasks tasks={tasks} changeStatus={changeStatus} handelUpdate={handelUpdate}/> : ''
           }
         </div>
     </div>

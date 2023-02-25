@@ -1,22 +1,26 @@
 import React from "react";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 import { Task } from "../models/task";
+import EditTask from "./EditTask";
 
 interface props {
     task: Task;
     changeStatus: (e: React.FormEvent, task: Task) => void;
 };
 
-const SwitchTask = ({task, changeStatus}: props) => {    
-    console.log(task);
-    
+interface propsUpdate {
+    handelUpdate: (e: React.FormEvent, task: Task) => void;
+}
+
+const SwitchTask = ({task, changeStatus, handelUpdate}: props & propsUpdate) => {        
     return (
-        <div>
-            {
-                !task.isDone && <InProgressUp task={task} changeStatus={changeStatus}/>
-            }
+        <div className="absolute right-0 top-2/4 -translate-y-2/4 w-20 flex justify-between mr-4">
+            <EditTask task={task} handelUpdate={handelUpdate}/>
             {
                 task.inProgress && <InProgressDown task={task} changeStatus={changeStatus}/>
+            }
+            {
+                !task.isDone && <InProgressUp task={task} changeStatus={changeStatus}/>
             }
         </div>
     )
@@ -34,7 +38,7 @@ const InProgressUp = ({task, changeStatus}: props) => {
     }
     return (
         <span 
-            className="absolute right-0 top-2/4 -translate-y-2/4 cursor-pointer"
+            className="cursor-pointer"
             onClick={(e) => handelChange(e, task)}
         >
             <AiOutlineArrowRight />
@@ -55,7 +59,7 @@ const InProgressDown = ({task, changeStatus}: props) => {
 
     return (
         <span 
-            className="absolute right-0 top-2/4 -translate-y-2/4 cursor-pointer"
+            className="cursor-pointer"
             onClick={(e) => handelChange(e, task)}
         >
             <AiOutlineArrowLeft />

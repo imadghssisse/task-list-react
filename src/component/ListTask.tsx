@@ -16,6 +16,16 @@ const ListTasks = ({tasks, changeStatus, handelUpdate}: props) => {
         {id: 3, label: "IsDone", inProgress: true, isDone: true}
     ];
 
+    const setStyle = (task: Task): string => {
+        let bgColor: string = "bg-light-blue";
+        if(task.inProgress && !task.isDone) {
+            bgColor = "bg-light-yellow";
+        } else if(task.isDone) {
+            bgColor = "bg-light-green"
+        }
+        return `text-xl p-4 my-4 border border-y-2 border-x-0 border-y-dark-blue relative ${bgColor}`;
+    }
+
     return (
         <div className="flex justify-around my-8 h-screen">
             {
@@ -27,7 +37,7 @@ const ListTasks = ({tasks, changeStatus, handelUpdate}: props) => {
                                 tasks.map(task => {
                                     if(task.inProgress === item.inProgress && task.isDone === item.isDone) {
                                         return(
-                                            <li className="p-4 my-4 border border-y-2 border-x-0 border-y-dark-blue relative" key={task.id}>
+                                            <li className={setStyle(task)} key={task.id}>
                                                 {task.todo}
                                                 <SwitchTask task={task} changeStatus={changeStatus} handelUpdate={handelUpdate}/>
                                             </li>
